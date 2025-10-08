@@ -10,29 +10,29 @@ module produto_escalar (
     input  logic         rst,
 
     // control
-    input  logic         i_start,
-    output logic         o_done,
-    output logic signed [63:0] o_result,
+    input  logic         start,
+    output logic         done,
+    output logic signed [63:0] result,
 
     // a[0..7]
-    input  logic signed [31:0] i_a0,
-    input  logic signed [31:0] i_a1,
-    input  logic signed [31:0] i_a2,
-    input  logic signed [31:0] i_a3,
-    input  logic signed [31:0] i_a4,
-    input  logic signed [31:0] i_a5,
-    input  logic signed [31:0] i_a6,
-    input  logic signed [31:0] i_a7,
+    input  logic signed [31:0] a0,
+    input  logic signed [31:0] a1,
+    input  logic signed [31:0] a2,
+    input  logic signed [31:0] a3,
+    input  logic signed [31:0] a4,
+    input  logic signed [31:0] a5,
+    input  logic signed [31:0] a6,
+    input  logic signed [31:0] a7,
 
     // b[0..7]
-    input  logic signed [31:0] i_b0,
-    input  logic signed [31:0] i_b1,
-    input  logic signed [31:0] i_b2,
-    input  logic signed [31:0] i_b3,
-    input  logic signed [31:0] i_b4,
-    input  logic signed [31:0] i_b5,
-    input  logic signed [31:0] i_b6,
-    input  logic signed [31:0] i_b7
+    input  logic signed [31:0] b0,
+    input  logic signed [31:0] b1,
+    input  logic signed [31:0] b2,
+    input  logic signed [31:0] b3,
+    input  logic signed [31:0] b4,
+    input  logic signed [31:0] b5,
+    input  logic signed [31:0] b6,
+    input  logic signed [31:0] b7
 );
 
     // Local regs
@@ -45,8 +45,8 @@ module produto_escalar (
     logic signed [63:0] result_q;
 
     // Default assignments
-    assign o_done = done_q;
-    assign o_result = result_q;
+    assign done = done_q;
+    assign result = result_q;
 
     always_ff @(posedge clk or posedge rst) begin
         if (rst) begin
@@ -56,12 +56,12 @@ module produto_escalar (
             idx <= 4'd0;
             result_q <= 64'sd0;
         end else begin
-            if (i_start && !busy) begin
+            if (start && !busy) begin
                 // latch inputs into internal arrays
-                a_reg[0] <= i_a0; a_reg[1] <= i_a1; a_reg[2] <= i_a2; a_reg[3] <= i_a3;
-                a_reg[4] <= i_a4; a_reg[5] <= i_a5; a_reg[6] <= i_a6; a_reg[7] <= i_a7;
-                b_reg[0] <= i_b0; b_reg[1] <= i_b1; b_reg[2] <= i_b2; b_reg[3] <= i_b3;
-                b_reg[4] <= i_b4; b_reg[5] <= i_b5; b_reg[6] <= i_b6; b_reg[7] <= i_b7;
+                a_reg[0] <= a0; a_reg[1] <= a1; a_reg[2] <= a2; a_reg[3] <= a3;
+                a_reg[4] <= a4; a_reg[5] <= a5; a_reg[6] <= a6; a_reg[7] <= a7;
+                b_reg[0] <= b0; b_reg[1] <= b1; b_reg[2] <= b2; b_reg[3] <= b3;
+                b_reg[4] <= b4; b_reg[5] <= b5; b_reg[6] <= b6; b_reg[7] <= b7;
 
                 acc <= 64'sd0;
                 idx <= 4'd0;
@@ -81,7 +81,7 @@ module produto_escalar (
                 end
             end else begin
                 // idle: keep done asserted until next start or until software clears by writing new inputs/start
-                if (!i_start)
+                if (!start)
                     done_q <= 1'b0;
             end
         end
