@@ -2,31 +2,15 @@
 // Implementação sequencial (1 MAC por ciclo) - latência: ~8 ciclos (+1).
 
 module produto_escalar (
-    input  logic         clk,
-    input  logic         rst,
-    input  logic         start,
-    output logic         done,
-    output logic signed [63:0] result,
+    input logic clk,
+    input logic rst,
+    input logic start,
+    input logic signed [31:0] a0, a1, a2, a3, a4, a5, a6, a7,
+    input logic signed [31:0] b0, b1, b2, b3, b4, b5, b6, b7,
 
-    // a[0..7]
-    input  logic signed [31:0] a0,
-    input  logic signed [31:0] a1,
-    input  logic signed [31:0] a2,
-    input  logic signed [31:0] a3,
-    input  logic signed [31:0] a4,
-    input  logic signed [31:0] a5,
-    input  logic signed [31:0] a6,
-    input  logic signed [31:0] a7,
+    output logic done,
+    output logic signed [63:0] result
 
-    // b[0..7]
-    input  logic signed [31:0] b0,
-    input  logic signed [31:0] b1,
-    input  logic signed [31:0] b2,
-    input  logic signed [31:0] b3,
-    input  logic signed [31:0] b4,
-    input  logic signed [31:0] b5,
-    input  logic signed [31:0] b6,
-    input  logic signed [31:0] b7
 );
 
     // Local regs
