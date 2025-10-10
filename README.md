@@ -71,4 +71,4 @@ Usando o iverilog para testar o funcionamento do código SystemVerilog:
     iverilog -g2012 rtl/produto_escalar.sv tb/tb_produto_escalar.sv -o sim_produto_escalar
     vvp sim_produto_escalar
 
-Uma observação a ser destacada é que a tarefa não evidenciou se queria que o SystemVerilog fosse sequencial ou combinacional, logo foi optado por desenvolver o código de maneira sequncial com clock e reset apesar de não ter sido pedido como entradas. Uma das razões de se ter escolhido a forma sequencial é que se o cálculo do produto escalar fosse combinacional a saída done seria inutilizada, já que não haveria necessidade da espera de done = 1. 
+Uma observação a ser destacada é que a tarefa não evidenciou se queria que o SystemVerilog fosse sequencial ou combinacional, logo foi optado por desenvolver o código de maneira sequencial com clock e reset apesar de não ter sido pedido como entradas. Uma das razões de se ter escolhido a forma sequencial é que se o cálculo do produto escalar fosse combinacional a saída done seria inutilizada, já que não haveria necessidade da espera de done = 1. 
