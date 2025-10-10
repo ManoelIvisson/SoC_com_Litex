@@ -35,7 +35,7 @@ O acelerador possui os seguintes CSRs mapeados:
 
 Com este mapeamento, a CPU consegue gerenciar de forma simples e eficiente a operação do acelerador, garantindo alto desempenho sem sobrecarregar o processador principal com cálculos intensivos. O uso do barramento CSR do LiteX facilita a expansão futura do SoC, permitindo a adição de outros periféricos de maneira modular.
 
-## Instruções para compilação
+## Instruções para compilação e execução
 
 Aqui seguem as instruções para a compilação tanto do SoC quanto do firmware:
 
@@ -43,4 +43,32 @@ Aqui seguem as instruções para a compilação tanto do SoC quanto do firmware:
 
     git clone https://github.com/ManoelIvisson/SoC_com_Litex/
     cd SoC_com_LiteX
-#### 2 - 
+#### 2 - Compilando o SoC
+
+    python3 litex/colorlight_i5.py --build
+Após o comando acima o processo de compilação será iniciado e como resultado a pasta build estará criada na pasta raiz.
+
+#### 3 - Compilando o firmware
+
+    cd firmware
+    make
+Após o comando `make` o arquivo _main.bin_ estará criado dentro da pasta firmware.
+
+#### 4 - Enviando o bitstream para o FPGA
+
+    python3 litex/colorlight_i5.py --load
+
+#### 5 - Enviando o firmware para o FPGA
+
+    litex_term /dev/ttyUSB0 --kernel firmware/main.bin
+
+O `dev/ttyUSB0` se refere a porta serial do computador, talvez precise ser mudada para uma porta especifica da sua máquina.  
+
+## Testes e observações
+
+Usando o iverilog para testar o funcionamento do código SystemVerilog:  
+
+    iverilog -g2012 rtl/produto_escalar.sv tb/tb_produto_escalar.sv -o sim_produto_escalar
+    vvp sim_produto_escalar
+
+Uma observação a ser destacada é que a tarefa não evidenciou se queria que o SystemVerilog fosse sequencial ou combinacional, logo foi optado por desenvolver o código de maneira sequncial com clock e reset apesar de não ter sido pedido como entradas. Uma das razões de se ter escolhido a forma sequencial é que se o cálculo do produto escalar fosse combinacional a saída done seria inutilizada, já que não haveria necessidade da espera de done = 1. 
